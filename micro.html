@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Classic | Sneaker Showcase</title>
 <style>
-/* ---------- Colours (light and dark) ---------- */
+
 :root { --bg:#fff; --text:#161616; --card:#f4f4f4; --line:#bbb; --accent:#243b85; --bad:#c0172b; }
 [data-theme="dark"] { --bg:#141414; --text:#f1f1f1; --card:#1f1f1f; --line:#4a4a4a; --accent:#3a57a8; --bad:#ff7b7b; }
 
@@ -17,12 +17,12 @@ h2 { font-size: 1.3rem; margin: 24px 0 10px; }
 a { color: var(--accent); }
 .wrap { max-width: 1000px; margin: auto; padding: 0 20px; }
 
-/* ---------- Buttons ---------- */
+
 .btn { display: inline-block; padding: 10px 18px; border: 1px solid var(--text); background: transparent;
        color: var(--text); font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
 .btn.primary, .btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-/* ---------- Header ---------- */
+
 header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; flex-wrap: wrap; }
 .brand { font-size: 1.4rem; font-weight: bold; text-decoration: none; color: var(--text); margin-right: auto; }
 nav { display: flex; gap: 16px; margin-right: 12px; }
@@ -30,7 +30,7 @@ nav a { font-weight: bold; text-decoration: none; }
 nav a.current { text-decoration: underline; }
 #menuBtn { display: none; }
 
-/* ---------- Cards and forms ---------- */
+
 .card { border: 1px solid var(--line); background: var(--card); padding: 18px; margin-bottom: 14px; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
 .form { max-width: 500px; border: 1px solid var(--line); background: var(--card); padding: 24px; margin: 20px 0; }
@@ -46,7 +46,7 @@ input.bad, select.bad { border-color: var(--bad); }
 .password-row { display: flex; gap: 8px; }
 .alert { border: 1px solid var(--bad); color: var(--bad); padding: 10px; font-weight: bold; margin-bottom: 8px; }
 
-/* ---------- Dashboard ---------- */
+
 .dash { display: grid; grid-template-columns: 220px 1fr 280px; gap: 20px; align-items: start; }
 .side .btn { display: block; width: 100%; margin-top: 8px; text-align: left; }
 .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
@@ -60,7 +60,7 @@ input.bad, select.bad { border-color: var(--bad); }
 .product .btn { display: block; width: 100%; margin-top: 10px; }
 .product label.btn { font-weight: bold; margin: 10px 0 0; }
 
-/* ---------- Calculator ---------- */
+
 #display { background: var(--bg); padding: 10px; text-align: right; font-size: 1.3rem; margin-bottom: 8px; min-height: 46px; overflow: hidden; }
 .keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .keys button { padding: 12px 0; font-size: 1.1rem; border: 1px solid var(--line); background: var(--card);
@@ -68,7 +68,7 @@ input.bad, select.bad { border-color: var(--bad); }
 .keys .op { background: var(--accent); color: #fff; }
 .keys .equals { grid-column: 1 / -1; }
 
-/* ---------- Chatbot ---------- */
+
 #chatBtn { position: fixed; right: 20px; bottom: 20px; z-index: 50; }
 #chat { position: fixed; right: 20px; bottom: 75px; z-index: 50; width: 320px; max-width: calc(100% - 40px);
         border: 1px solid var(--line); background: var(--card); padding: 12px; }
@@ -87,7 +87,7 @@ input.bad, select.bad { border-color: var(--bad); }
 #toast.show { opacity: 1; }
 footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
 
-/* ---------- Mobile ---------- */
+
 @media (max-width: 767px) {
   .dash { display: flex; flex-direction: column; }
   #menuBtn { display: inline-block; }
@@ -98,7 +98,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
 </head>
 <body>
 
-<!-- ===== Header ===== -->
+
 <header>
   <a class="brand" href="#home">Classic</a>
   <button class="btn" id="menuBtn">☰</button>
@@ -115,7 +115,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
 
 <main class="wrap">
 
-<!-- ===== Home ===== -->
+
 <section class="page" id="home">
   <h1>Classic Sneaker Showcase</h1>
   <p>Browse running, casual and basketball sneakers, pick your size and buy in a few clicks.</p>
@@ -141,7 +141,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
   <p class="card" style="margin-top:14px"><b>This is a student project.</b> No real orders are taken.</p>
 </section>
 
-<!-- ===== Register ===== -->
+
 <section class="page" id="register" hidden>
   <h1>Register</h1>
   <form class="form" data-next="#signin" data-msg="Registration successful. Please sign in." novalidate>
@@ -163,7 +163,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
   </form>
 </section>
 
-<!-- ===== Sign Up ===== -->
+
 <section class="page" id="signup" hidden>
   <h1>Sign up</h1>
   <form class="form" data-next="#signin" data-msg="Account created. Please sign in." novalidate>
@@ -178,7 +178,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
   </form>
 </section>
 
-<!-- ===== Sign In ===== -->
+
 <section class="page" id="signin" hidden>
   <h1>Sign in</h1>
   <p>For this demo, any correctly formatted email and password works.</p>
@@ -196,7 +196,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
   </form>
 </section>
 
-<!-- ===== Dashboard ===== -->
+
 <section class="page" id="dashboard" hidden>
   <div class="dash">
 
@@ -236,7 +236,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
 
 <footer class="wrap">Classroom project demo. Prices, sizes and policies shown here are examples only.</footer>
 
-<!-- ===== Chatbot ===== -->
+
 <button class="btn primary" id="chatBtn">Ask Classic</button>
 <div id="chat" hidden>
   <div class="chat-top">
@@ -255,7 +255,7 @@ footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
 <div id="toast"></div>
 
 <script>
-/* ---------- Small helpers ---------- */
+
 function $(id) { return document.getElementById(id); }
 function rupees(n) { return "₹" + n.toLocaleString("en-IN"); }
 
@@ -266,7 +266,7 @@ function showToast(text) {
   setTimeout(function () { t.classList.remove("show"); }, 2500);
 }
 
-/* ---------- Light / dark theme (saved) ---------- */
+
 function setTheme(theme) {
   document.documentElement.dataset.theme = theme;
   $("themeBtn").textContent = theme === "dark" ? "Light mode" : "Dark mode";
@@ -277,7 +277,7 @@ $("themeBtn").onclick = function () {
   setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
 };
 
-/* ---------- Switching pages ---------- */
+
 function showPage() {
   var id = location.hash.slice(1) || "home";
   if (!$(id)) id = "home";
@@ -292,7 +292,7 @@ function showPage() {
 window.addEventListener("hashchange", showPage);
 $("menuBtn").onclick = function () { $("nav").classList.toggle("open"); };
 
-/* ---------- Products, photos and cart ---------- */
+
 var shoes = [
   { id: 1, name: "Aero Run 2",   cat: "Running",    price: 4999 },
   { id: 2, name: "Cloud Jogger", cat: "Running",    price: 5499 },
@@ -315,10 +315,10 @@ function drawProducts() {
     var sizes = "";
     for (var n = 6; n <= 11; n++) sizes += "<option>UK " + n + "</option>";
 
-    // Uploaded photo first, otherwise try images/shoeN.jpg
+    
     var pic = photos[s.id] || "images/shoe" + s.id + ".jpg";
 
-    // Upload / Remove buttons only show in Owner mode
+    
     var ownerButtons = "";
     if (ownerMode) {
       ownerButtons = '<label class="btn">Upload photo' +
@@ -360,11 +360,11 @@ document.addEventListener("click", function (e) {
   var buyBtn = e.target.closest("[data-buy]");
   var removeBtn = e.target.closest("[data-remove]");
 
-  if (catBtn) {                      // category buttons and home page category links
+  if (catBtn) {                      
     currentCat = catBtn.dataset.cat;
     drawProducts();
   }
-  if (buyBtn) {                      // Buy Now
+  if (buyBtn) {                      
     var id = Number(buyBtn.dataset.buy);
     var shoe = shoes.filter(function (s) { return s.id === id; })[0];
     var size = $("size" + id).value;
@@ -373,7 +373,7 @@ document.addEventListener("click", function (e) {
     drawCart();
     showToast("Added " + shoe.name + " (" + size + ") to your cart");
   }
-  if (removeBtn) {                   // Remove photo (Owner mode)
+  if (removeBtn) {                   
     delete photos[removeBtn.dataset.remove];
     localStorage.setItem("classic-photos", JSON.stringify(photos));
     drawProducts();
@@ -387,7 +387,7 @@ $("clearCart").onclick = function () {
   drawCart();
 };
 
-/* ---------- Owner mode: upload photos in the browser ---------- */
+
 function updateOwnerBtn() {
   $("ownerBtn").textContent = "Owner mode: " + (ownerMode ? "On" : "Off");
   $("ownerBtn").classList.toggle("active", ownerMode);
@@ -400,7 +400,7 @@ $("ownerBtn").onclick = function () {
   drawProducts();
 };
 
-// When a file is chosen: shrink it, save it, redraw the cards
+
 document.addEventListener("change", function (e) {
   var id = e.target.dataset.photo;
   var file = e.target.files && e.target.files[0];
@@ -410,7 +410,7 @@ document.addEventListener("change", function (e) {
   reader.onload = function () {
     var img = new Image();
     img.onload = function () {
-      var w = Math.min(600, img.width);          // max 600px wide keeps it small
+      var w = Math.min(600, img.width);          
       var h = img.height * w / img.width;
       var canvas = document.createElement("canvas");
       canvas.width = w;
@@ -433,7 +433,7 @@ document.addEventListener("change", function (e) {
   reader.readAsDataURL(file);
 });
 
-/* ---------- Account display ---------- */
+
 function drawAccount() {
   var user = localStorage.getItem("classic-user");
   if (user) {
@@ -446,7 +446,7 @@ function drawAccount() {
   }
 }
 
-/* ---------- Form validation ---------- */
+
 var patterns = {
   name:     [/^[a-zA-Z ]{2,50}$/, "Use letters and spaces only (2 to 50 characters)."],
   empId:    [/^[A-Za-z0-9]{6,12}$/, "Use 6 to 12 letters or numbers."],
@@ -455,7 +455,7 @@ var patterns = {
   password: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, "Use 8+ characters with upper, lower, a number and one of @$!%*?&."]
 };
 
-// Checks one field, shows or clears its error, returns true/false
+
 function checkField(input) {
   var rule = input.dataset.rule;
   var value = input.value.trim();
@@ -498,7 +498,7 @@ document.querySelectorAll("form").forEach(function (form) {
     if (alertBox) alertBox.hidden = allOk;
     if (!allOk) return;
 
-    if (form.dataset.save) {                 // sign-in form: remember the email
+    if (form.dataset.save) {                 
       localStorage.setItem("classic-user", form.querySelector("[data-rule=email]").value.trim());
       drawAccount();
     }
@@ -508,7 +508,7 @@ document.querySelectorAll("form").forEach(function (form) {
   });
 });
 
-// Show / hide password on the sign-in page
+
 $("eye").onclick = function () {
   var box = $("loginPass");
   var hidden = box.type === "password";
@@ -516,7 +516,7 @@ $("eye").onclick = function () {
   this.textContent = hidden ? "Hide" : "Show";
 };
 
-/* ---------- Calculator ---------- */
+
 var calcText = "";
 var keys = ["7","8","9","/","4","5","6","*","1","2","3","-","0",".","C","+"];
 var calcHtml = '<div id="display">0</div><div class="keys">';
@@ -548,13 +548,13 @@ $("calc").addEventListener("click", function (e) {
   }
 
   var isOp = "+-*/".indexOf(key) > -1;
-  if (isOp && calcText === "" && key !== "-") return;           // cannot start with + * /
-  if (isOp && /[+\-*\/]$/.test(calcText)) calcText = calcText.slice(0, -1);   // replace last operator
+  if (isOp && calcText === "" && key !== "-") return;           
+  if (isOp && /[+\-*\/]$/.test(calcText)) calcText = calcText.slice(0, -1);   
   calcText += key;
   showCalc(calcText);
 });
 
-/* ---------- Chatbot ---------- */
+
 var answers = [
   [["size", "fit"],           "Sizes run from UK 6 to UK 11. Pick your size on each card, then tap Buy Now."],
   [["price", "cost", "cheap"],"Our sneakers cost between ₹2,499 and ₹6,999."],
@@ -617,7 +617,7 @@ $("chatForm").onsubmit = function (e) {
   ask(text);
 };
 
-/* ---------- Start ---------- */
+
 updateOwnerBtn();
 drawProducts();
 drawCart();
