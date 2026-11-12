@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classic | Sneaker Showcase</title>
+<style>
+/* ---------- Colours (light and dark) ---------- */
+:root { --bg:#fff; --text:#161616; --card:#f4f4f4; --line:#bbb; --accent:#243b85; --bad:#c0172b; }
+[data-theme="dark"] { --bg:#141414; --text:#f1f1f1; --card:#1f1f1f; --line:#4a4a4a; --accent:#3a57a8; --bad:#ff7b7b; }
+
+* { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; }
+body { font: 16px/1.5 Arial, sans-serif; background: var(--bg); color: var(--text); }
+h1 { font-size: 2.2rem; margin: 30px 0 8px; }
+h2 { font-size: 1.3rem; margin: 24px 0 10px; }
+a { color: var(--accent); }
+.wrap { max-width: 1000px; margin: auto; padding: 0 20px; }
+
+/* ---------- Buttons ---------- */
+.btn { display: inline-block; padding: 10px 18px; border: 1px solid var(--text); background: transparent;
+       color: var(--text); font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+.btn.primary, .btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ---------- Header ---------- */
+header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; flex-wrap: wrap; }
+.brand { font-size: 1.4rem; font-weight: bold; text-decoration: none; color: var(--text); margin-right: auto; }
+nav { display: flex; gap: 16px; margin-right: 12px; }
+nav a { font-weight: bold; text-decoration: none; }
+nav a.current { text-decoration: underline; }
+#menuBtn { display: none; }
+
+/* ---------- Cards and forms ---------- */
+.card { border: 1px solid var(--line); background: var(--card); padding: 18px; margin-bottom: 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.form { max-width: 500px; border: 1px solid var(--line); background: var(--card); padding: 24px; margin: 20px 0; }
+label { display: block; font-weight: bold; margin: 14px 0 4px; }
+input, select { width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent;
+                color: var(--text); font-size: 1rem; }
+select option { background: var(--bg); color: var(--text); }
+input.bad, select.bad { border-color: var(--bad); }
+.error { display: block; color: var(--bad); font-size: .9rem; min-height: 20px; }
+.hint { font-size: .85rem; opacity: .75; }
+.checkbox { display: flex; align-items: center; gap: 8px; font-weight: normal; }
+.checkbox input { width: 20px; }
+.password-row { display: flex; gap: 8px; }
+.alert { border: 1px solid var(--bad); color: var(--bad); padding: 10px; font-weight: bold; margin-bottom: 8px; }
+
+/* ---------- Dashboard ---------- */
+.dash { display: grid; grid-template-columns: 220px 1fr 280px; gap: 20px; align-items: start; }
+.side .btn { display: block; width: 100%; margin-top: 8px; text-align: left; }
+.products { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+.product { border: 1px solid var(--line); background: var(--card); padding: 12px; }
+.thumb { position: relative; overflow: hidden; height: 130px; background: var(--bg);
+         display: flex; align-items: center; justify-content: center; font-size: 3.5rem; margin-bottom: 8px; }
+.thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.product:hover img { transform: scale(1.12); }          /* hover zoom */
+.price { position: absolute; top: 6px; left: 6px; z-index: 2; background: var(--accent); color: #fff;
+         padding: 2px 8px; font-size: .85rem; font-weight: bold; }
+.product .btn { display: block; width: 100%; margin-top: 10px; }
+.product label.btn { font-weight: bold; margin: 10px 0 0; }
+
+/* ---------- Calculator ---------- */
+#display { background: var(--bg); padding: 10px; text-align: right; font-size: 1.3rem; margin-bottom: 8px; min-height: 46px; overflow: hidden; }
+.keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.keys button { padding: 12px 0; font-size: 1.1rem; border: 1px solid var(--line); background: var(--card);
+               color: var(--text); cursor: pointer; }
+.keys .op { background: var(--accent); color: #fff; }
+.keys .equals { grid-column: 1 / -1; }
+
+/* ---------- Chatbot ---------- */
+#chatBtn { position: fixed; right: 20px; bottom: 20px; z-index: 50; }
+#chat { position: fixed; right: 20px; bottom: 75px; z-index: 50; width: 320px; max-width: calc(100% - 40px);
+        border: 1px solid var(--line); background: var(--card); padding: 12px; }
+#chatLog { height: 190px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.msg { padding: 6px 10px; max-width: 85%; font-size: .92rem; }
+.user { align-self: flex-end; background: var(--accent); color: #fff; }
+.bot { align-self: flex-start; background: var(--bg); }
+#chatForm { display: flex; gap: 6px; }
+.chat-top { display: flex; justify-content: space-between; align-items: center; }
+.chat-top .btn { padding: 4px 10px; }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.quick button { padding: 4px 8px; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; font-size: .85rem; }
+
+#toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--accent);
+         color: #fff; padding: 10px 18px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 70; }
+#toast.show { opacity: 1; }
+footer { padding: 20px; padding-bottom: 90px; font-size: .9rem; opacity: .75; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 767px) {
+  .dash { display: flex; flex-direction: column; }
+  #menuBtn { display: inline-block; }
+  nav { display: none; flex-direction: column; width: 100%; }
+  nav.open { display: flex; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header>
+  <a class="brand" href="#home">Classic</a>
+  <button class="btn" id="menuBtn">☰</button>
+  <nav id="nav">
+    <a href="#home">Home</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#register">Register</a>
+    <a href="#signup">Sign Up</a>
+    <a href="#signin">Sign In</a>
+  </nav>
+  <button class="btn" id="themeBtn">Light mode</button>
+  <button class="btn" id="ownerBtn">Owner mode: Off</button>
+</header>
+
+<main class="wrap">
+
+<!-- ===== Home ===== -->
+<section class="page" id="home">
+  <h1>Classic Sneaker Showcase</h1>
+  <p>Browse running, casual and basketball sneakers, pick your size and buy in a few clicks.</p>
+  <p style="margin-top:14px">
+    <a class="btn primary" href="#dashboard">Shop sneakers</a>
+    <a class="btn" href="#register">Create account</a>
+  </p>
+
+  <h2>Choose a category</h2>
+  <div class="cards">
+    <a class="card" href="#dashboard" data-cat="Running"><b>Running</b><br>Light, cushioned pairs</a>
+    <a class="card" href="#dashboard" data-cat="Casual"><b>Casual</b><br>Clean everyday sneakers</a>
+    <a class="card" href="#dashboard" data-cat="Basketball"><b>Basketball</b><br>High-top support</a>
+  </div>
+
+  <h2>What you get</h2>
+  <div class="cards">
+    <div class="card"><b>Hover to zoom</b><br>Look closely at every pair.</div>
+    <div class="card"><b>Size dropdown</b><br>Choose UK 6 to 11.</div>
+    <div class="card"><b>Price tags</b><br>Clear price on every sneaker.</div>
+    <div class="card"><b>Light and dark</b><br>Your theme is remembered.</div>
+  </div>
+  <p class="card" style="margin-top:14px"><b>This is a student project.</b> No real orders are taken.</p>
+</section>
+
+<!-- ===== Register ===== -->
+<section class="page" id="register" hidden>
+  <h1>Register</h1>
+  <form class="form" data-next="#signin" data-msg="Registration successful. Please sign in." novalidate>
+    <div class="field"><label>Full name</label><input data-rule="name"><span class="error"></span></div>
+    <div class="field"><label>Employee / Register ID</label><input data-rule="empId"><span class="error"></span></div>
+    <div class="field"><label>Email address</label><input data-rule="email"><span class="error"></span></div>
+    <div class="field"><label>Mobile number</label><input data-rule="mobile" maxlength="10"><span class="error"></span></div>
+    <div class="field"><label>Division</label>
+      <select data-rule="dept">
+        <option value="">Select your division</option>
+        <option>CSE</option><option>ECE</option><option>EEE</option><option>Mechanical</option><option>Civil</option>
+      </select><span class="error"></span></div>
+    <div class="field"><label>Password</label><input type="password" id="r-pass" data-rule="password">
+      <span class="error"></span>
+      <span class="hint">8+ characters with uppercase, lowercase, a number and one of @$!%*?&amp;</span></div>
+    <div class="field"><label>Confirm password</label><input type="password" data-rule="confirm"><span class="error"></span></div>
+    <p style="margin-top:16px"><button class="btn primary" type="submit">Register</button></p>
+    <p>Already registered? <a href="#signin">Sign in</a></p>
+  </form>
+</section>
+
+<!-- ===== Sign Up ===== -->
+<section class="page" id="signup" hidden>
+  <h1>Sign up</h1>
+  <form class="form" data-next="#signin" data-msg="Account created. Please sign in." novalidate>
+    <div class="field"><label>Email address</label><input data-rule="email"><span class="error"></span></div>
+    <div class="field"><label>Password</label><input type="password" data-rule="password">
+      <span class="error"></span>
+      <span class="hint">8+ characters with uppercase, lowercase, a number and one of @$!%*?&amp;</span></div>
+    <div class="field"><label class="checkbox"><input type="checkbox" data-rule="terms"> I accept the Terms of Service</label>
+      <span class="error"></span></div>
+    <p style="margin-top:16px"><button class="btn primary" type="submit">Create account</button></p>
+    <p>Already have an account? <a href="#signin">Sign in</a></p>
+  </form>
+</section>
+
+<!-- ===== Sign In ===== -->
+<section class="page" id="signin" hidden>
+  <h1>Sign in</h1>
+  <p>For this demo, any correctly formatted email and password works.</p>
+  <form class="form" data-next="#dashboard" data-msg="Signed in successfully." data-save="yes" novalidate>
+    <div class="alert" id="alert" hidden>Invalid email or password format.</div>
+    <div class="field"><label>Email address</label><input data-rule="email"><span class="error"></span></div>
+    <div class="field"><label>Password</label>
+      <div class="password-row">
+        <input type="password" id="loginPass" data-rule="loginpass">
+        <button type="button" class="btn" id="eye">Show</button>
+      </div>
+      <span class="error"></span></div>
+    <p style="margin-top:16px"><button class="btn primary" type="submit">Sign in</button></p>
+    <p>New here? <a href="#signup">Sign up</a></p>
+  </form>
+</section>
+
+<!-- ===== Dashboard ===== -->
+<section class="page" id="dashboard" hidden>
+  <div class="dash">
+
+    <aside class="card side">
+      <b>Category</b>
+      <div id="cats"></div>
+      <br><b>Pages</b>
+      <a class="btn" href="#home">Landing page</a>
+      <a class="btn" href="#register">Register</a>
+      <a class="btn" href="#signup">Sign Up</a>
+      <a class="btn" href="#signin">Sign In</a>
+    </aside>
+
+    <div>
+      <div class="card">
+        <h1 style="margin-top:0">Welcome, <span id="who">guest</span></h1>
+        <p id="acct"></p>
+      </div>
+      <h2>Sneaker collection</h2>
+      <div class="products" id="products"></div>
+    </div>
+
+    <div>
+      <div class="card"><h2 style="margin-top:0">Calculator</h2><div id="calc"></div></div>
+      <div class="card">
+        <h2 style="margin-top:0">Your cart</h2>
+        <ul id="cartList" style="padding-left:18px"></ul>
+        <p>Total: <b id="total">₹0</b></p>
+        <button class="btn" id="clearCart" type="button">Clear cart</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">Classroom project demo. Prices, sizes and policies shown here are examples only.</footer>
+
+<!-- ===== Chatbot ===== -->
+<button class="btn primary" id="chatBtn">Ask Classic</button>
+<div id="chat" hidden>
+  <div class="chat-top">
+    <b>Classic help</b>
+    <span><button class="btn" id="clearChat" type="button">Clear</button>
+    <button class="btn" id="closeChat" type="button">×</button></span>
+  </div>
+  <div id="chatLog"></div>
+  <form id="chatForm">
+    <input id="chatInput" placeholder="Type a question" autocomplete="off">
+    <button class="btn primary" type="submit">Send</button>
+  </form>
+  <div class="quick" id="quick"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ---------- Small helpers ---------- */
+function $(id) { return document.getElementById(id); }
+function rupees(n) { return "₹" + n.toLocaleString("en-IN"); }
+
+function showToast(text) {
+  var t = $("toast");
+  t.textContent = text;
+  t.classList.add("show");
+  setTimeout(function () { t.classList.remove("show"); }, 2500);
+}
+
+/* ---------- Light / dark theme (saved) ---------- */
+function setTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  $("themeBtn").textContent = theme === "dark" ? "Light mode" : "Dark mode";
+  localStorage.setItem("theme", theme);
+}
+setTheme(localStorage.getItem("theme") || "dark");
+$("themeBtn").onclick = function () {
+  setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+};
+
+/* ---------- Switching pages ---------- */
+function showPage() {
+  var id = location.hash.slice(1) || "home";
+  if (!$(id)) id = "home";
+
+  document.querySelectorAll(".page").forEach(function (p) { p.hidden = (p.id !== id); });
+  document.querySelectorAll("nav a").forEach(function (a) {
+    a.classList.toggle("current", a.getAttribute("href") === "#" + id);
+  });
+  $("nav").classList.remove("open");
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", showPage);
+$("menuBtn").onclick = function () { $("nav").classList.toggle("open"); };
+
+/* ---------- Products, photos and cart ---------- */
+var shoes = [
+  { id: 1, name: "Aero Run 2",   cat: "Running",    price: 4999 },
+  { id: 2, name: "Cloud Jogger", cat: "Running",    price: 5499 },
+  { id: 3, name: "Street Low",   cat: "Casual",     price: 3499 },
+  { id: 4, name: "Canvas Daily", cat: "Casual",     price: 2499 },
+  { id: 5, name: "Court High",   cat: "Basketball", price: 6999 },
+  { id: 6, name: "Slam Pro",     cat: "Basketball", price: 5999 }
+];
+var categories = ["All", "Running", "Casual", "Basketball"];
+var currentCat = "All";
+var cart = JSON.parse(localStorage.getItem("classic-cart")) || [];
+var photos = JSON.parse(localStorage.getItem("classic-photos")) || {};
+var ownerMode = localStorage.getItem("owner-mode") === "yes";
+
+function drawProducts() {
+  var html = "";
+  shoes.forEach(function (s) {
+    if (currentCat !== "All" && s.cat !== currentCat) return;
+
+    var sizes = "";
+    for (var n = 6; n <= 11; n++) sizes += "<option>UK " + n + "</option>";
+
+    // Uploaded photo first, otherwise try images/shoeN.jpg
+    var pic = photos[s.id] || "images/shoe" + s.id + ".jpg";
+
+    // Upload / Remove buttons only show in Owner mode
+    var ownerButtons = "";
+    if (ownerMode) {
+      ownerButtons = '<label class="btn">Upload photo' +
+        '<input type="file" accept="image/*" data-photo="' + s.id + '" hidden></label>';
+      if (photos[s.id]) {
+        ownerButtons += '<button class="btn" data-remove="' + s.id + '">Remove photo</button>';
+      }
+    }
+
+    html += '<div class="product">' +
+      '<div class="thumb">👟<span class="price">' + rupees(s.price) + '</span>' +
+      '<img src="' + pic + '" alt="' + s.name + '" onerror="this.remove()"></div>' +
+      '<b>' + s.name + '</b><br><small>' + s.cat + '</small>' +
+      '<label>Size</label><select id="size' + s.id + '">' + sizes + '</select>' +
+      '<button class="btn primary" data-buy="' + s.id + '">Buy Now</button>' +
+      ownerButtons + '</div>';
+  });
+  $("products").innerHTML = html;
+
+  var buttons = "";
+  categories.forEach(function (c) {
+    buttons += '<button class="btn' + (c === currentCat ? ' active' : '') + '" data-cat="' + c + '">' + c + '</button>';
+  });
+  $("cats").innerHTML = buttons;
+}
+
+function drawCart() {
+  var total = 0, html = "";
+  cart.forEach(function (item) {
+    total += item.price;
+    html += "<li>" + item.name + " (" + item.size + ") " + rupees(item.price) + "</li>";
+  });
+  $("cartList").innerHTML = html || "<li>Your cart is empty.</li>";
+  $("total").textContent = rupees(total);
+}
+
+document.addEventListener("click", function (e) {
+  var catBtn = e.target.closest("[data-cat]");
+  var buyBtn = e.target.closest("[data-buy]");
+  var removeBtn = e.target.closest("[data-remove]");
+
+  if (catBtn) {                      // category buttons and home page category links
+    currentCat = catBtn.dataset.cat;
+    drawProducts();
+  }
+  if (buyBtn) {                      // Buy Now
+    var id = Number(buyBtn.dataset.buy);
+    var shoe = shoes.filter(function (s) { return s.id === id; })[0];
+    var size = $("size" + id).value;
+    cart.push({ name: shoe.name, size: size, price: shoe.price });
+    localStorage.setItem("classic-cart", JSON.stringify(cart));
+    drawCart();
+    showToast("Added " + shoe.name + " (" + size + ") to your cart");
+  }
+  if (removeBtn) {                   // Remove photo (Owner mode)
+    delete photos[removeBtn.dataset.remove];
+    localStorage.setItem("classic-photos", JSON.stringify(photos));
+    drawProducts();
+    showToast("Photo removed");
+  }
+});
+
+$("clearCart").onclick = function () {
+  cart = [];
+  localStorage.setItem("classic-cart", "[]");
+  drawCart();
+};
+
+/* ---------- Owner mode: upload photos in the browser ---------- */
+function updateOwnerBtn() {
+  $("ownerBtn").textContent = "Owner mode: " + (ownerMode ? "On" : "Off");
+  $("ownerBtn").classList.toggle("active", ownerMode);
+}
+
+$("ownerBtn").onclick = function () {
+  ownerMode = !ownerMode;
+  localStorage.setItem("owner-mode", ownerMode ? "yes" : "no");
+  updateOwnerBtn();
+  drawProducts();
+};
+
+// When a file is chosen: shrink it, save it, redraw the cards
+document.addEventListener("change", function (e) {
+  var id = e.target.dataset.photo;
+  var file = e.target.files && e.target.files[0];
+  if (!id || !file) return;
+
+  var reader = new FileReader();
+  reader.onload = function () {
+    var img = new Image();
+    img.onload = function () {
+      var w = Math.min(600, img.width);          // max 600px wide keeps it small
+      var h = img.height * w / img.width;
+      var canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+
+      photos[id] = canvas.toDataURL("image/jpeg", 0.8);
+      try {
+        localStorage.setItem("classic-photos", JSON.stringify(photos));
+      } catch (err) {
+        delete photos[id];
+        showToast("Browser storage is full. Try a smaller photo.");
+        return;
+      }
+      drawProducts();
+      showToast("Photo saved");
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ---------- Account display ---------- */
+function drawAccount() {
+  var user = localStorage.getItem("classic-user");
+  if (user) {
+    $("who").textContent = user.split("@")[0];
+    $("acct").innerHTML = 'Signed in as <b>' + user + '</b>. <a href="#signin" id="signOut">Sign out</a>';
+    $("signOut").onclick = function () { localStorage.removeItem("classic-user"); drawAccount(); };
+  } else {
+    $("who").textContent = "guest";
+    $("acct").innerHTML = 'You are signed out. <a href="#signin">Sign in</a> to save your name here.';
+  }
+}
+
+/* ---------- Form validation ---------- */
+var patterns = {
+  name:     [/^[a-zA-Z ]{2,50}$/, "Use letters and spaces only (2 to 50 characters)."],
+  empId:    [/^[A-Za-z0-9]{6,12}$/, "Use 6 to 12 letters or numbers."],
+  email:    [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Enter a valid email address."],
+  mobile:   [/^[6-9]\d{9}$/, "Enter 10 digits starting with 6, 7, 8 or 9."],
+  password: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, "Use 8+ characters with upper, lower, a number and one of @$!%*?&."]
+};
+
+// Checks one field, shows or clears its error, returns true/false
+function checkField(input) {
+  var rule = input.dataset.rule;
+  var value = input.value.trim();
+  var ok, message;
+
+  if (rule === "dept") {
+    ok = value !== "";                       message = "Please choose your division.";
+  } else if (rule === "confirm") {
+    ok = value !== "" && input.value === $("r-pass").value;   message = "Passwords do not match.";
+  } else if (rule === "terms") {
+    ok = input.checked;                      message = "You must accept the Terms of Service.";
+  } else if (rule === "loginpass") {
+    ok = input.value.length >= 8;            message = "Password must be at least 8 characters.";
+  } else {
+    var text = (rule === "password") ? input.value : value;
+    ok = patterns[rule][0].test(text);       message = patterns[rule][1];
+  }
+
+  input.classList.toggle("bad", !ok);
+  input.closest(".field").querySelector(".error").textContent = ok ? "" : message;
+  return ok;
+}
+
+document.querySelectorAll("form").forEach(function (form) {
+  var fields = form.querySelectorAll("[data-rule]");
+
+  fields.forEach(function (field) {
+    field.addEventListener("blur", function () { checkField(field); });
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var allOk = true;
+    fields.forEach(function (field) {
+      if (!checkField(field)) allOk = false;
+    });
+
+    var alertBox = form.querySelector(".alert");
+    if (alertBox) alertBox.hidden = allOk;
+    if (!allOk) return;
+
+    if (form.dataset.save) {                 // sign-in form: remember the email
+      localStorage.setItem("classic-user", form.querySelector("[data-rule=email]").value.trim());
+      drawAccount();
+    }
+    form.reset();
+    showToast(form.dataset.msg);
+    location.hash = form.dataset.next;
+  });
+});
+
+// Show / hide password on the sign-in page
+$("eye").onclick = function () {
+  var box = $("loginPass");
+  var hidden = box.type === "password";
+  box.type = hidden ? "text" : "password";
+  this.textContent = hidden ? "Hide" : "Show";
+};
+
+/* ---------- Calculator ---------- */
+var calcText = "";
+var keys = ["7","8","9","/","4","5","6","*","1","2","3","-","0",".","C","+"];
+var calcHtml = '<div id="display">0</div><div class="keys">';
+keys.forEach(function (k) {
+  var isOp = "+-*/".indexOf(k) > -1;
+  calcHtml += '<button class="' + (isOp ? "op" : "") + '" data-key="' + k + '">' + k + '</button>';
+});
+calcHtml += '<button class="op equals" data-key="=">=</button></div>';
+$("calc").innerHTML = calcHtml;
+
+function showCalc(text) { $("display").textContent = text || "0"; }
+
+$("calc").addEventListener("click", function (e) {
+  var key = e.target.dataset.key;
+  if (!key) return;
+
+  if (key === "C") { calcText = ""; showCalc(""); return; }
+
+  if (key === "=") {
+    if (calcText === "") return;
+    if (!/^-?[0-9.]+([+\-*\/][0-9.]+)*$/.test(calcText)) {
+      calcText = ""; showCalc("Invalid expression"); return;
+    }
+    var result = Function("return " + calcText)();
+    if (!isFinite(result)) { calcText = ""; showCalc("Cannot divide by 0"); return; }
+    calcText = String(Math.round(result * 100000000) / 100000000);
+    showCalc(calcText);
+    return;
+  }
+
+  var isOp = "+-*/".indexOf(key) > -1;
+  if (isOp && calcText === "" && key !== "-") return;           // cannot start with + * /
+  if (isOp && /[+\-*\/]$/.test(calcText)) calcText = calcText.slice(0, -1);   // replace last operator
+  calcText += key;
+  showCalc(calcText);
+});
+
+/* ---------- Chatbot ---------- */
+var answers = [
+  [["size", "fit"],           "Sizes run from UK 6 to UK 11. Pick your size on each card, then tap Buy Now."],
+  [["price", "cost", "cheap"],"Our sneakers cost between ₹2,499 and ₹6,999."],
+  [["deliver", "ship", "return", "refund"], "Delivery takes 3 to 5 days. Unworn pairs can be returned within 30 days (demo rules)."],
+  [["theme", "dark", "light", "mode"],      "Use the button at the top right to switch between light and dark mode."],
+  [["calculator", "calc"],    "The calculator is on the Dashboard, in the right column."],
+  [["cart", "buy", "order"],  "Tap Buy Now on a sneaker to add it to your cart. The cart is on the Dashboard."],
+  [["register", "sign", "login", "account"], "Use Register or Sign Up to create an account, then Sign In."],
+  [["running", "casual", "basketball", "category"], "We have Running, Casual and Basketball sneakers."],
+  [["thank"],                 "You are welcome!"]
+];
+var quickQuestions = ["What sizes are available?", "How do I use the calculator?",
+                      "How do I change the theme?", "What are the delivery and return rules?"];
+
+function addMessage(text, type) {
+  var div = document.createElement("div");
+  div.className = "msg " + type;
+  div.textContent = text;
+  $("chatLog").appendChild(div);
+  $("chatLog").scrollTop = $("chatLog").scrollHeight;
+}
+
+function findAnswer(question) {
+  var q = question.toLowerCase();
+  if (/^(hi|hello|hey)\b/.test(q)) return "Hi! Ask me about sizes, prices, delivery or the calculator.";
+  for (var i = 0; i < answers.length; i++) {
+    for (var j = 0; j < answers[i][0].length; j++) {
+      if (q.indexOf(answers[i][0][j]) > -1) return answers[i][1];
+    }
+  }
+  return "Sorry, I did not get that. Try asking about sizes, prices, delivery or the theme.";
+}
+
+function ask(question) {
+  addMessage(question, "user");
+  setTimeout(function () { addMessage(findAnswer(question), "bot"); }, 350);
+}
+
+function startChat() {
+  $("chatLog").innerHTML = "";
+  addMessage("Hi, I am Classic help. Type a question or choose one below.", "bot");
+}
+
+var quickHtml = "";
+quickQuestions.forEach(function (q) { quickHtml += "<button type='button'>" + q + "</button>"; });
+$("quick").innerHTML = quickHtml;
+
+$("chatBtn").onclick = function () {
+  $("chat").hidden = !$("chat").hidden;
+  if (!$("chat").hidden && $("chatLog").children.length === 0) startChat();
+};
+$("closeChat").onclick = function () { $("chat").hidden = true; };
+$("clearChat").onclick = startChat;
+$("quick").onclick = function (e) { if (e.target.tagName === "BUTTON") ask(e.target.textContent); };
+$("chatForm").onsubmit = function (e) {
+  e.preventDefault();
+  var text = $("chatInput").value.trim();
+  if (text === "") return;
+  $("chatInput").value = "";
+  ask(text);
+};
+
+/* ---------- Start ---------- */
+updateOwnerBtn();
+drawProducts();
+drawCart();
+drawAccount();
+showPage();
+</script>
+</body>
+</html>
